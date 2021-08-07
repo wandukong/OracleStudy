@@ -1,6 +1,7 @@
+
 # DDL
 
-## CREATE : 테이블 생성
+## ⚽CREATE : 테이블 생성
 ```sql
 create table 테이블이름(
 	컬럼명 datatype [ null | not null ] [ constraint 별칭 제약조건 ] ,
@@ -9,7 +10,11 @@ create table 테이블이름(
 )
 ```
 
-## ALTER : 테이블 수정
+```sql
+create table dept_coppy as select * from dept [where 조건]; -- 테이블 복사하여 생성하기
+```
+
+## 🏈ALTER : 테이블 수정
 
 ### 컬럼 추가
 ```sql
@@ -51,13 +56,12 @@ alter table de_test rename column zz to grade;
 desc de_test;
 ```
 
-## DROP : 테이블 삭제
+## ⚾DROP : 테이블 삭제
 ```sql
 drop table 테이블이름;
 ```
 
-## TRUNCATE : 테이블 모든 데이터 삭제
-> 테이블에 있는 데이터를 **한 번에 제거**한다.
+## 🎱TRUNCATE : 테이블 모든 데이터 삭제
 - 테이블이 최초 생성되었을 당시의 storage만 남기고, 데이터가 담겨 있던 storage는 Release된다. 
 - CREATE TABLE을 한 직후의 상태로 만든다.
 - 조건 사용 X
@@ -67,4 +71,9 @@ truncate table 테이블이름;
 ```
 ```sql
 truncate table de_test; 
+```
+
+## 🏀RENAME : 테이블 이름 변경
+```sql
+rename emp_old to emp_new;
 ```
