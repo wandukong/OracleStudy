@@ -40,6 +40,17 @@ insert into test(name) values('park');
 insert into test(number) values(1);
 ```
 
+#### 레코드 복사
+- 필드 개수, 데이터 타입이 일치해야 한다.
+```sql
+insert into 테이블이름 복사할 테이블 내용;
+```
+```sql
+insert into c_emp2_blank select * from emp2;
+insert into c_emp2_blank select * from emp2 where deptno=1000;
+insert into c_emp2_blank(empno, name, deptno,pay) select empno, name, deptno, pay from emp2;
+```
+
 ## 🐼UPDATE : 레코드 수정
 ```sql
 update 테이블이름 set 컬럼명=변경값, 컬럼명=변경값, 컬럼명=변경값, ..... [ where 조건식 ];
