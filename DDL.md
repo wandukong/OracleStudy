@@ -9,9 +9,23 @@ create table 테이블이름(
 	.....
 )
 ```
-
 ```sql
-create table dept_coppy as select * from dept [where 조건]; -- 테이블 복사하여 생성하기
+CREATE TABLE emp 
+(	empno NUMBER(4)	constraint emp_empno_pk primary key,
+	ename VARCHAR2(10),
+	job VARCHAR2(9),
+	deptno NUMBER(2) constraint emp_deptno_fk references dept(deptno)
+);
+```
+
+### 테이블 복사
+- **제약 조건**은 복사되지 않는다. (null | not null은 복사됨)
+- 형식만 복사하고 싶은 경우 where절에 조건이 합당하지 않게 작성한다. ex) where 1=0
+```sql
+create table 테이블 as 복사할 테이블 내용;
+```
+```sql
+create table dept_copy as select * from dept where deptno = 1000;
 ```
 
 ## 🏈ALTER : 테이블 수정
