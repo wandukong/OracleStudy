@@ -1,5 +1,4 @@
-
-#View
+# View
 > 가상 테이블
 - 실제 존재하지 않지만 실제 테이블과 같이 사용한다.
      (select , insert , delete, update 가능)
