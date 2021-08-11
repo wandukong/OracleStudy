@@ -13,7 +13,7 @@
 ```sql
 savepoint 이름; -- SQL실행 전에 영역을 분할함.
 ...
-rollback to 이름; -- 특정 영역에 해당하는 부분까지 취소됨.
+rollback work to 이름; -- 특정 영역에 해당하는 부분까지 취소됨.
 ```
 ```sql
 savepoint sp1;
