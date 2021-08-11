@@ -10,4 +10,4 @@ select rownum, ename, sal from emp;
 ```sql
 select rownum, ename, sal from (select * from emp order by sal); 
 -- 인라인 뷰를 사용하지 않고 사용하면, rownum이 뒤죽박죽 된다.
-``
+```
