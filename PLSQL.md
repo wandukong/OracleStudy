@@ -156,6 +156,24 @@ begin
 end;
 ```
 
+<hr />
+
+**loop**
+```sql
+loop
+	실행문장;
+	증감식;
+	exit when 조건식;
+end loop;
+```
+```sql
+loop 
+    fetch c_emptype into data;
+    exit when c_emptype%notfound;
+    dbms_output.put_line(data.name || ' ' || data.pay || ' ' || data.position);
+end loop;
+```
+
 ## 🪓프로시저(procedure)
 > PL/SQL block을 데이터베이스에 저장하여 특정 작업을 수행하는, 이름이 있는 PL/SQL block 이다.
 - 매개 변수를 받을 수 있고, 반복적으로 사용 할 수 있다.
@@ -257,6 +275,20 @@ close 커서이름;
 ```
 ```sql
 close c_emptype;
+```
+
+### 커서 속성
+- **%found** : 마지막으로 얻은 커서의 결과, 레코드가 있으면 참
+- **%notfound** : 마지막으로 얻은 커서의 결과, 레코드가 없으면 참
+- **%rowcount** : 커서에서 얻는 레코드 수 반환
+- **isopen** : 커서가 열려있는지 확인, 열려 있으면 참
+
+```sql
+loop 
+    fetch c_emptype into data;
+    exit when c_emptype%notfound;
+    dbms_output.put_line(data.name || ' ' || data.pay || ' ' || data.position);
+end loop;
 ```
 
 ### 예제	
