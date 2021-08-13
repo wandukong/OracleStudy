@@ -217,3 +217,68 @@ select text from user_source
 where lower(name) = '프로시저이름';
 ```
 
+## ✂cursor
+> 특정 SQL 문장을 처리한 결과를 담고 있는 영역 을 가리키는 일종의 포인터이다.
+- 처리된 SQL 문장의 결과 집합에 접근할 수 있다.
+
+
+### 커서 선언
+```sql
+cursor 커서이름 is select문장;
+```
+```sql
+cursor c_emptype is select * from emp2 where emp_type = '정규직';
+```
+
+### 커서 열기
+```sql
+open 커서이름;
+```
+```sql
+open c_emptype;
+```
+	
+### 데이터 읽기
+- loop 반복문을 활용한다.
+```
+fetch 커서이름 into 저장할 변수;
+```
+```sql
+loop 
+    fetch c_emptype into data;
+    exit when c_emptype%notfound;
+    dbms_output.put_line(data.name || ' ' || data.pay || ' ' || data.position);
+end loop;
+```
+
+### 커서 닫기
+```sql
+close 커서이름;
+```
+```sql
+close c_emptype;
+```
+
+### 예제	
+```sql
+-- 문제3] emp2에서 날짜순으로 내림차순으로 정렬된 상태에서 5명을 출력하는 저장 프로시저
+create or replace procedure p_birthday
+is
+    data emp2%rowtype;
+    cursor c_birthday is select * 
+						 from (select * from emp2 order by birthday desc) 
+						 where rownum < = 5;
+begin
+    open c_birthday;
+    loop
+        fetch c_birthday into data;
+        exit when c_birthday%notfound;
+        dbms_output.put_line(data.birthday || ' ' || data.name || ' ' || 
+					        data.emp_type || ' ' || data.pay || ' ' || data.position);
+    end loop;
+    dbms_output.put_line('결과 레코드수 => ' || c_birthday%rowcount);
+    close c_birthday;
+end;
+
+exec p_birthday;
+```
