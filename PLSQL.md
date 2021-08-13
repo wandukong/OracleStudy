@@ -141,8 +141,8 @@ end;
 **while**
 ```sql
 while 조건식 loop
-	실행문장;
-	증감식;
+    실행문장;
+    증감식;
 end loop;
 ```
 ```sql
@@ -161,9 +161,9 @@ end;
 **loop**
 ```sql
 loop
-	실행문장;
-	증감식;
-	exit when 조건식;
+    실행문장;
+    증감식;
+    exit when 조건식;
 end loop;
 ```
 ```sql
