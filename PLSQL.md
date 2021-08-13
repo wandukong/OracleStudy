@@ -266,8 +266,8 @@ create or replace procedure p_birthday
 is
     data emp2%rowtype;
     cursor c_birthday is select * 
-						 from (select * from emp2 order by birthday desc) 
-						 where rownum < = 5;
+				from (select * from emp2 order by birthday desc) 
+				where rownum < = 5;
 begin
     open c_birthday;
     loop
