@@ -23,7 +23,7 @@ FROM EMP
 SELECT EMP_ID
 	   ,SALARY AS "급여"
 	   ,AVG(SALARY) OVER(PARTITION BY JOB) AS "직무별평균급여"
-	   ,AVG(SALARY) OVER() AS "평균급여"
+	   ,AVG(SALARY) OVER() AS "평균급여"
 FROM EMP
 ```
 ## ORDER BY
@@ -33,6 +33,6 @@ FROM EMP
 SELECT EMP_ID
 	   ,SALARY AS "급여"
 	   ,AVG(SALARY) OVER(PARTITION BY JOB ORDER BY JOB) AS "직무별평균급여"
-	   ,AVG(SALARY) OVER() AS "평균급여" 
+	   ,AVG(SALARY) OVER() AS "평균급여" 
 FROM EMP
 ```
