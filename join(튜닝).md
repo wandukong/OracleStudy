@@ -28,13 +28,20 @@ Inner 테이블로 건건이 조인을 시도하는 방식
 - 온라인 트랜잭션이 많고, 부분범위처리(주로 페이징에서 사용)가 가능할 때
 - 각 테이블의 데이터는 많지만, 추출할 대상이 되는 데이터 양이 많지 않을 때
 
+**인덱스 설계**
+- 드라이빙 테이블의 조인 컬럼을 인덱스에 추가해야 할 상황이라면 뒤에 배치해야 한다.
+- 드라이빙 테이블의 인덱스에 조인 컬럼을 추가해도 테이블로 방문한다면, 조인 컬럼을 추가하지 않는 것이 좋다.
+- **Inner 테이블의 조인 컬럼은 반드시 인덱스로 있어야 한다.**
+	- 선두 컬럼으로 있는 것이 좋다.
+	- Inner 테이블의 조건이 모두 등치 조건일 경우에는 순서 상관 X
+
 **예제**
 ```sql
 SELECT /*+ ORDERED USE_NL(E) */
 	   *
 FROM DEPT D
 	 ,EMP E
-WHERE 1= 1
+WHERE 1 = 1
       AND D.DEPTNO = E.DEPTNO;
 
 -- DEPT 테이블에서 데이터를 한 건 읽어서 EMP 테이블로 조인을 시도하고, 
@@ -51,7 +58,7 @@ SELECT /*+ ORDERED USE_NL(E) */
 	   ,B.*
 FROM ITEM A
 	 ,UITEM B
-WHERE 1= 1
+WHERE 1 = 1
       AND A.ITEM_ID = B.ITEM_ID     -- 1
       AND A.ITEM_TYPE_CD = '100100' -- 2
       AND A.SALE_YN = 'Y'           -- 3
@@ -99,6 +106,10 @@ WHERE 1= 1
 - GROUP BY 혹은 ORDER BY 등으로 이미 정렬한 서브 쿼리와 조인 시도 시 두 번째 테이블의 양이 적을 때
 - 테이블의 양이 매우 커서 NL 조인이 힘들고, 조건이(=) 조인이 아니어서 해시 조인도 사용하기 힘들 때
 
+**인덱스 설계**
+- 정렬이 발생하지 않을 위치에 조인 컬럼을 반드시 추가해야 한다.
+- Inner 테이블에도 조인 컬럼을 인덱스에 추가해 정렬을 하지 않도록 만드는 것이 좋다.
+
 **예제**
  ```sql
 SELECT /*+ ORDERED USE_MERGE(E) */
@@ -118,7 +129,7 @@ SELECT /*+ ORDERED USE_MERGE(B) */
 	   *
 FROM ITEM A
 	 ,UITEM B
-WHERE 1= 1
+WHERE 1 = 1
       AND A.ITEM_ID = B.ITEM_ID     -- 1
       AND A.ITEM_TYPE_CD = '100100' -- 2
       AND A.SALE_YN = 'Y'           -- 3
@@ -128,7 +139,7 @@ WHERE 1= 1
 
 -- 최적의 인덱스
 -- ITEM 테이블: ITEM_TYPE_CD + SALE_YN + ITEM_ID
--- UTIEM 테이블: SALE_YN + ITEM_ID
+-- UTIEM 테이블: SALE_YN + ITEM_ID -> 순서를 바꾸면 인덱스 풀스캔 발생
 ```
 - 각각의 테이블에서 최종적으로 추려진 데이터를 조인키 지준으로 정렬하게 된다.
 - 이때 정렬을 대신할 인덱스가 있으면 정렬을 위한 부하를 줄일 수 있다
@@ -162,14 +173,37 @@ WHERE 1= 1
 - 조인 컬럼에 인덱스가 있지만 드라이빙 테이블의 결과 건수가 많아 Inner 테이블로 많은 양의 랜덤 액세스가 발생할 때
 - 두 테이블의 양이 많아 소트 머지 조인 시도 시 정렬로 인한 부하가 클 때
 
+**인덱스 설계**
+- 조인 컬럼이 인덱스에 포함되지 않아도 성능상의 손익은 없다.
+	- 다만 조인 컬림이 인덱스에 포함되어 테이블로의 방문을 막을 수 있다면 고려해볼 만하다.
+
 **예제**
 ```sql
 SELECT /*+ ORDERED USE_HASH(E) */
 	   *
 FROM DEPT D
 	 ,EMP E
-WHERE 1= 1
+WHERE 1 = 1
       AND D.DEPTNO = E.DEPTNO
+```
+```sql
+SELECT /*+ ORDERED USE_HASH(B) */
+	   *
+FROM ITEM A
+	 ,UITEM B
+WHERE 1 = 1
+      AND A.ITEM_ID = B.ITEM_ID     -- 1
+      AND A.ITEM_TYPE_CD = '100100' -- 2
+      AND A.SALE_YN = 'Y'           -- 3
+      AND B.SALE_YN = 'Y';          -- 4  
+
+-- 동작순서: 2 -> 3 -> 1 -> 4
+-- A 테이블을 Build Input으로 선택해 해시 맵을 만들고,
+-- B 테이블을 Probe Input으로 선택해 A 테이블을 읽으면서 조인을 시도한다.
+
+-- 최적의 인덱스
+-- ITEM 테이블: ITEM_TYPE_CD + SALE_YN
+-- UTIEM 테이블: SALE_YN
 ```
 - 두 개의 테이블만으로 해시 조인을 할 경우 ORDERED 또는 LEADING 힌트를 사용해서 Build Input을 지정
 - 세 개 이상일 경우 SWAP_JOIN_INPUTS(테이블명) 사용
