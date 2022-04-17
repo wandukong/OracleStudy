@@ -4,7 +4,7 @@
 	- Sort Merge Join
 	- Hash Join
 
-## NL JOIN
+## 🍏NL JOIN
 ```
 두 테이블이 조인을 할 때, 드라이빙 테이블(outer 테이블)에서 읽은 결과를 
 Inner 테이블로 건건이 조인을 시도하는 방식
@@ -71,7 +71,7 @@ WHERE 1 = 1
 -- UITEM 테이블: ITEM_ID + SALE_YN
 ```
 
-## SORT MERGE JOIN
+## 🍋SORT MERGE JOIN
 ```
 조인 시 두 테이블을 각각 조건에 맞게 먼저 읽고, 
 읽은 두 테이블을 조인 컬럼을 기준으로 정렬해 놓고 조인을 수행하는 방식
@@ -144,7 +144,7 @@ WHERE 1 = 1
 - 각각의 테이블에서 최종적으로 추려진 데이터를 조인키 지준으로 정렬하게 된다.
 - 이때 정렬을 대신할 인덱스가 있으면 정렬을 위한 부하를 줄일 수 있다
 
-## HASH JOIN
+## 🍓HASH JOIN
 ```
 조인될 테이블 중 하나를 해시 테이블로 선정하여, 조인될 테이블의 조인 키값을 해시 함수의 반환 값으로 
 비교하여 매치되는 결과 겂을 얻는 방식
@@ -210,7 +210,7 @@ WHERE 1 = 1
 	-	```USE_HASH(E) SWAP_JOIN_INPUTS(E) ```
 
 
-## OUTER JOIN
+## 🍇OUTER JOIN
 
 **Outer NL 조인**
  - NL 조인의 특성상 Outer 기호(+)가 붙지 않은 테이블을 항상 드라이빙 테이블로 선택한다.
