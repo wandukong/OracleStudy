@@ -1,4 +1,4 @@
-# Sub Program( Procedure, Function, Package)
+# ub Program( Procedure, Function, Package)
 
 ## 🚥 프로시저(Procedure)
 ```
@@ -13,7 +13,7 @@
 	- OUT
 		- 초기화 되지 않은 변수
 		- 기본값 할당 불가
-	- IN OUT: IN OUT 매개변수를 사용하여 입력 변수로 사용하고, 이후 출력 변수로 사용
+	- IN OUT: IN OUT 매개변수를 사용하여 입력 변수로 사용하고, 이후 출력 변수로 사용
 		- 초기화된 변수
 		- 기본값 할당 불가
 
@@ -286,7 +286,7 @@ EXEC emp_total.emp_avg;
 
 ## 🌏 공통
 
-### 중복 선언 가능
+### 중복 선언 가능
 ```sql
 -- 저장되지 않는 서브 프로그램도 중첩과 중복 정의가 가능하다.
 DECLARE
