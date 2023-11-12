@@ -23,7 +23,7 @@ EXCEPTION  -- 예외 처리
           DBMS_OUTPUT.PUT_LINE('조회되는 값이 없습니다.') ;
      WHEN TOO_MANY_ROWS THEN -- SELECT되는 건이 한 건보다 많음
 	      DBMS_OUTPUT.PUT_LINE('조회되는 건수가 한 건보다 많습니다.') ;
-	 WHEN OTHERS THEN -- 어떠한 오류가 발생하더라도 처리한다.
+     WHEN OTHERS THEN -- 어떠한 오류가 발생하더라도 처리한다.
 	      DBMS_OUTPUT.PUT_LINE('error: ' || sqlerrm(sqlcode));
 ```
 
