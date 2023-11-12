@@ -1,4 +1,4 @@
-# ub Program( Procedure, Function, Package)
+# Sub Program( Procedure, Function, Package)
 
 ## 🚥 프로시저(Procedure)
 ```
